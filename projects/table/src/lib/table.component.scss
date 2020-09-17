@@ -209,4 +209,44 @@
         }
     }
 
+    .halo-table-menu {
+        width: 180px;
+        position: relative;
+        border: 0.3px solid $blueColor;
+        overflow: inherit !important;
+
+        .mat-menu-item {
+            background-color: #fff !important;
+            width: 100%;
+            padding: 0;
+            border-bottom: 1px solid rgba(#C9CFE1, 0.6);
+            line-height: 30px;
+            height: inherit;
+
+            span {
+                color: $purpleColor;
+                font-size: 12px;
+                font-weight: 100;
+            }
+
+            &:last-child {
+                border-bottom: none;
+            }
+
+            &:hover:not(:disabled) {
+                background: none !important;
+    
+                span {
+                    color: $subTitleColor;
+                    font-weight: bold;
+                }
+            }
+
+            &:disabled span {
+                opacity: 0.4;
+            }
+
+        }
+    }
+
 }

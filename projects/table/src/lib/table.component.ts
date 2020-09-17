@@ -1,17 +1,19 @@
 import { ApplicationRef, Component, ComponentFactoryResolver, ElementRef, EmbeddedViewRef, EventEmitter, Inject, Injector, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { ActivatedRoute, Router } from '@angular/router';
-import * as moment from 'moment-timezone';
+import * as moment_ from 'moment-timezone';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { HaloTableButton, HaloTableButtonEvent, HaloTableChangeEvent, HaloTableChangeEventType, HaloTableColumn, HaloTableColumnType, HaloTableExpandRowsConfig, HaloTableParams, HaloTableParamsAsString, HaloTableRowMenuEvent, HaloTableRowMenuItem, HaloTableSort, HaloTableTimezone } from './table';
 import { HaloTableExpandedComponent } from './table.expanded.component';
 
+const moment = moment_;
+
 
 @Component({
     selector: 'halo-table',
-    templateUrl: './halo-table.component.html',
-    styleUrls: ['./halo-table.component.scss']
+    templateUrl: './table.component.html',
+    styleUrls: ['./table.component.scss']
 })
 
 export class HaloTableComponent implements OnInit, OnDestroy {
