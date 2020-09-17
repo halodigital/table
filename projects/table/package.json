@@ -1,6 +1,6 @@
 {
     "name": "@halodigital/table",
-    "version": "1.0.0",
+    "version": "1.0.3",
     "peerDependencies": {
         "@angular/cdk": "^10.2.0",
         "@angular/common": "^10.0.14",
