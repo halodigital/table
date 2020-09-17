@@ -1,0 +1,16 @@
+$blackColor: #000000;
+$whiteColor: #ffffff;
+$darkBlueColor: #00167c;
+$blueColor: #0c59ff;
+$purpleColor: #868dbb;
+$grayColor: #c5cad9;
+
+$bgColor: #e5eaf6;
+$hoverRowColor: #cfd8ef;
+$currentRowColor: #c2d3f7;
+$shadowColor: rgba(12, 89, 255, 0.28);
+
+$mainShadow: inset 0 17px 15px -15px $shadowColor, 0 0 4px rgba($blackColor, 0.28);
+$paginatorShadow: 0 -5px 2px -5px rgba($blackColor, 0.28);
+
+$borderBottom: 1px solid $grayColor;

@@ -1,0 +1,212 @@
+@import 'styles/icons.scss';
+@import 'styles/variables.scss';
+
+
+:host::ng-deep {
+
+    width: 100%;
+    height: 100%;
+    background-color: $bgColor;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    box-shadow:  $mainShadow;
+
+    .halo-table-hidden {
+        display: none !important;
+    }
+
+    .halo-table-actions {
+        height: 70px;
+        padding: 25px 20px 10px 0;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        border-bottom: $borderBottom;
+
+        > div {
+            margin-left: 10px;
+
+            halo-input {
+                margin-bottom: 12px;
+            }
+        }
+    }
+
+    .halo-table-headers {
+        min-height: 113px;
+        overflow: hidden;
+    
+        &.halo-table-no-filters {
+            min-height: 57px;
+        }
+
+        thead {
+            .mat-sort-header-content {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                display: block;
+            }
+        }
+
+        tbody {
+            visibility: collapse;
+        }
+    }
+
+    .halo-table-content {
+        margin-bottom: 2px;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        flex-grow: 1;
+        overflow: overlay;
+        position: relative;
+
+        table {
+            margin-top: -1px;
+
+            thead {
+                visibility: collapse;
+                display: table-header-group !important;
+            }
+        }
+
+        .halo-table-empty {
+            width: 100%;
+            height: 100%;
+            color: $purpleColor;
+            font-size: 1.8em;
+            font-family: Ubuntu Mono;
+            left: 0;
+            top: 0;
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            i {
+                color: $blueColor;
+                opacity: 0.1;
+                font-size: 10em;
+                margin-bottom: 30px;
+            }
+        }
+
+        .halo-table-loading {
+            width: 100%;
+            height: 100%;
+            background-color: rgba($bgColor, 0.7);
+            left: 0;
+            top: 0;
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            halo-loading {
+                width: 150px;
+            }
+        }
+    }
+
+    .halo-table-paginator {
+        width: 100%;
+        height: 55px;
+        box-shadow: $paginatorShadow;
+
+        .mat-paginator {
+            background: transparent;
+        }
+    }
+
+    table {
+        min-width: 100%;
+        background: transparent;
+
+        td, th {
+            width: 220px;
+            min-width: 220px;
+            max-width: 220px;
+            padding: 3px 15px !important;
+
+            &.halo-table-checkbox, &.halo-table-expand, &.halo-table-menu {
+                width: 60px;
+                min-width: 60px;
+                max-width: 60px;
+            }
+        }
+
+        .halo-table-title {
+            color: $purpleColor;
+            font-size: 1em;
+            font-family: Ubuntu;
+            font-weight: 500;
+            border-bottom: $borderBottom;
+        }
+
+        .halo-table-filter {
+            border-bottom: $borderBottom;
+
+            &.halo-table-checkbox, &.halo-table-expand, &.halo-table-menu {
+                padding-top: 15px;
+                padding-left: 25px;
+            }
+
+            halo-input {
+                width: 80%;
+                max-width: 180px;
+                margin-bottom: 15px;
+            }
+        }
+
+        .halo-table-row {
+            height: 50px;
+
+            &.halo-table-current td {
+                background-color: $currentRowColor !important;
+                cursor: default !important;
+            }
+
+            &.halo-table-clickable:not(.halo-table-current) td {
+                cursor: pointer !important;
+            }
+
+            &:hover td, &.halo-table-checked td {
+                background-color: $hoverRowColor;
+            }
+
+            td, th {
+                color: $darkBlueColor;
+                font-size: 1.1em;
+                font-family: Ubuntu;
+                font-weight: 300;
+                border-bottom: $borderBottom;
+
+                &.halo-table-checkbox, &.halo-table-expand, &.halo-table-menu {
+                    padding-left: 25px;
+                }
+
+                &.halo-table-expand {
+                    i {
+                        color: $blueColor;
+                    }
+                }
+
+                &.halo-table-menu {
+                    i {
+                        color: $purpleColor;
+                    }
+                }
+            }
+        }
+
+        .halo-table-expanded-row {
+            padding: 20px 45px !important;
+            background-color: $whiteColor;
+            border-bottom: $borderBottom;
+        }
+    }
+
+}

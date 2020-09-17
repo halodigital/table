@@ -1,0 +1,194 @@
+<div *ngIf="showActions" class="halo-table-actions">
+
+    <div *ngIf="showGeneralFilter">
+        <halo-input id="halo-table-generalFilter" [(ngModel)]="generalFilter" placeholder="Search" (valueChanged)="generalFilterChanged()"></halo-input>
+    </div>
+
+    <div *ngFor="let button of buttons">
+        <button mat-raised-button id="halo-table-button-{{button.id}}" [disabled]="isButtonDisabled(button)" (click)="buttonClicked(button.id)">{{getButtonCaption(button)}}</button>
+    </div>
+
+</div>
+
+<div #headers class="halo-table-headers" [class.halo-table-no-filters]="!showColumnsFilters">
+
+    <table mat-table matSort [dataSource]="rows" [matSortActive]="sort?.columnId" [matSortDirection]="sort?.direction" (matSortChange)="sortChanged($event)">
+
+        <ng-container *ngFor="let column of columns" [matColumnDef]="column.id">
+
+            <ng-container *ngIf="!column.title">
+
+                <th mat-header-cell
+                    *matHeaderCellDef
+                    class="halo-table-title"
+                    [class.halo-table-checkbox]="isCheckboxColumn(column)"
+                    [class.halo-table-expand]="isExpandColumn(column)"
+                    [class.halo-table-menu]="isMenuColumn(column)">
+                </th>
+
+            </ng-container>
+
+            <ng-container *ngIf="column.title">
+
+                <th mat-header-cell
+                    mat-sort-header
+                    *matHeaderCellDef
+                    id="halo-table-title-{{column.id}}"
+                    class="halo-table-title"
+                    [haloTooltip]="getColumnTitleTooltip(column)"
+                    tooltipPosition="top-center"
+                    [disabled]="!isSortableColumns">
+                    
+                    {{column.title}}
+                
+                </th>
+
+            </ng-container>
+
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columnsIds;"></tr>
+
+        <ng-container *ngIf="showColumnsFilters">
+
+            <ng-container *ngFor="let column of columns" [matColumnDef]="column.id + '-filter'">
+
+                <th mat-header-cell *matHeaderCellDef class="halo-table-filter" [class.halo-table-checkbox]="isCheckboxColumn(column)" [class.halo-table-expand]="isExpandColumn(column)" [class.halo-table-menu]="isMenuColumn(column)">
+    
+                    <halo-input
+                        *ngIf="isCheckboxColumn(column)"
+                        type="checkbox"
+                        [(ngModel)]="parentCheckboxState">
+                    </halo-input>
+    
+                    <halo-input
+                        *ngIf="isRegularColumn(column)"
+                        id="halo-table-input-{{column.id}}"
+                        [(ngModel)]="columnsFilters[column.id]"
+                        [type]="column.type"
+                        [noValidate]="true"
+                        [placeholder]="'Search ' + column.title"
+                        [range]="column.type === 'date'"
+                        [multiple]="column.type === 'select'"
+                        [options]="column.options"
+                        [optionsEndpoint]="column.optionsEndpoint"
+                        [optionsCaching]="false"
+                        [min]="column.min"
+                        [max]="column.max"
+                        (valueChanged)="columnsFiltersChanged()">
+                    </halo-input>
+    
+                </th>
+    
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="columnsFilterIds;"></tr>
+
+        </ng-container>
+
+    </table>
+
+</div>
+
+<div #content class="halo-table-content" (scroll)="scroll($event.target)">
+
+    <table>
+
+        <thead></thead>
+
+        <tbody>
+
+            <ng-container *ngFor="let row of rows; let rowIndex = index;">
+
+                <tr class="halo-table-row" [class.halo-table-checked]="checkboxesState[rowIndex]" [class.halo-table-current]="isCurrentRow(rowIndex)" [class.halo-table-clickable]="isClickableRows">
+
+                    <ng-container *ngFor="let column of columns" [ngSwitch]="column.id">
+
+                        <td *ngSwitchCase="'checkbox'" class="halo-table-checkbox">
+
+                            <halo-input type="checkbox" [(ngModel)]="checkboxesState[rowIndex]"></halo-input>
+
+                        </td>
+
+                        <td *ngSwitchCase="'expand'" class="halo-table-expand">
+
+                            <button mat-icon-button (click)="expandChanged(rowIndex)">
+                                <i *ngIf="!expandsState[rowIndex]" class="icon-expand"></i>
+                                <i *ngIf="expandsState[rowIndex]" class="icon-collapse"></i>
+                            </button>
+
+                        </td>
+
+                        <td *ngSwitchDefault
+                            id="halo-table-{{column.id}}-{{rowIndex}}"
+                            tooltipPosition="top-center"
+                            [haloTooltip]="row[column.id]"
+                            [enableEllipsis]="true"
+                            (click)="rowClicked(row, rowIndex)">
+
+                            {{row[column.id]}}
+
+                        </td>
+
+                        <td *ngSwitchCase="'menu'" class="halo-table-menu">
+
+                            <button mat-icon-button [matMenuTriggerFor]="menu">
+                                <i class="icon-menu"></i>
+                            </button>
+
+                            <mat-menu #menu="matMenu" class="float-menu" xPosition="before" yPosition="below">
+                                <button mat-menu-item *ngFor="let rowMenuItem of rowMenuItems" (click)="rowMenuAction(rowMenuItem.id, row, rowIndex)">
+                                    <span>{{rowMenuItem.caption}}</span>
+                                </button>
+                            </mat-menu>
+
+                        </td>
+
+                    </ng-container>
+
+                </tr>
+
+                <tr *ngIf="expandsState[rowIndex]">
+
+                    <td id="expanded-row-{{rowIndex}}"
+                        class="halo-table-expanded-row"
+                        [attr.colspan]="columns.length">
+                    </td>
+
+                </tr>
+
+            </ng-container>
+
+        </tbody>
+
+    </table>
+
+    <div #loading class="halo-table-loading" [class.halo-table-hidden]="!isLoadingState">
+
+        <halo-loading></halo-loading>
+
+    </div>
+
+    <div #empty class="halo-table-empty" [class.halo-table-hidden]="!isEmptyState">
+
+        <i class="icon-empty"></i>
+
+        There is nothing here...
+
+    </div>
+
+</div>
+
+<div *ngIf="showPaginator" class="halo-table-paginator">
+
+    <mat-paginator #paginator
+        showFirstLastButtons
+        [class.halo-table-hidden]="isEmptyState"
+        [length]="totalRows"
+        [pageIndex]="pageIndex - 1"
+        [pageSize]="pageSize"
+        [pageSizeOptions]="[20, 50, 100, 200]"
+        (page)="pagingChanged($event.pageIndex, $event.pageSize)">
+    </mat-paginator>
+
+</div>
