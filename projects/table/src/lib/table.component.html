@@ -136,7 +136,7 @@
                                 <i class="icon-menu"></i>
                             </button>
 
-                            <mat-menu #menu="matMenu" class="halo-table-float-menu" xPosition="before" yPosition="below">
+                            <mat-menu #menu="matMenu" xPosition="before" yPosition="below">
                                 <button mat-menu-item *ngFor="let rowMenuItem of rowMenuItems" (click)="rowMenuAction(rowMenuItem.id, row, rowIndex)">
                                     <span>{{rowMenuItem.caption}}</span>
                                 </button>
